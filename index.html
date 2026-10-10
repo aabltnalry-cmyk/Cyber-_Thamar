@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Cyber Lab: منصة عربية تفاعلية لتعلّم أساسيات C++ عبر تمارين تلقائية وتصحيح فوري.">
+<title>Cyber Lab | تعلّم C++</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--card:#121d30;--line:#263650;--text:#edf4ff;--muted:#a8b7ce;--accent:#43c6ac;--accent2:#6c8cff;--good:#78e0a0;--bad:#ff9292}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#182a45 0,#0b1220 60%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.65}
+.wrap{max-width:900px;margin:auto;padding:20px 14px 45px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0 20px}
+.brand{display:flex;align-items:center;gap:12px}.logo{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:24px;color:#071321;font-weight:900}
+h1{font-size:clamp(23px,5vw,34px);margin:0}.subtitle{color:var(--muted);font-size:14px;margin:2px 0 0}
+.pill{border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:13px}
+.card{background:rgba(18,29,48,.94);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 10px 30px #0002}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:#0b1526;border:1px solid var(--line);border-radius:12px;padding:8px 12px;min-width:90px}.stat small{display:block;color:var(--muted)}.stat strong{font-size:20px}
+label{display:block;font-weight:700;margin:12px 0 6px}
+select,input{width:100%;border:1px solid var(--line);border-radius:11px;background:#0b1526;color:var(--text);padding:12px;font:inherit}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:inherit;font-weight:700;border:1px solid var(--line);border-radius:11px;padding:11px 14px;background:#182740;color:var(--text);cursor:pointer;transition:transform .12s,border-color .12s}
+button:hover{border-color:var(--accent);transform:translateY(-1px)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.primary{background:linear-gradient(135deg,#36bda6,#4e9fe9);color:#06131d;border:0}.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.question-number{color:var(--accent);font-weight:800;font-size:13px}.question{font-size:21px;margin:7px 0 4px}.muted{color:var(--muted);font-size:14px}
+pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;background:#070d17;border:1px solid #24344c;border-radius:13px;padding:16px;font:14px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4}
+.feedback{padding:13px;border-radius:12px;margin-top:13px;white-space:pre-wrap}.success{background:#102c25;border:1px solid #276b52}.error{background:#321b24;border:1px solid #804052}.neutral{background:#0c1d32;border:1px solid #2d4d75}
+.progress{height:8px;background:#07101d;border-radius:99px;overflow:hidden;margin-top:12px}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
+@media(max-width:560px){.wrap{padding:13px 10px 30px}.card{padding:14px}.controls{grid-template-columns:1fr}.question{font-size:19px}.stat{min-width:78px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><div class="logo">&lt;/&gt;</div><div><h1>Cyber Lab</h1><p class="subtitle">مختبرك العربي لتعلّم C++ خطوة بخطوة</p></div></div>
+  <div class="pill">نسخة تجريبية تعمل دون إنترنت</div>
+</header>
+
+<section class="card">
+  <div class="toprow">
+    <div><h2 style="margin:0">🎯 تدريب تلقائي</h2><div class="muted">كلما ضغطت «تمرين جديد» يتولّد سؤال جديد ويتصحّح فورًا.</div></div>
+    <div class="stats">
+      <div class="stat"><small>الصحيح</small><strong id="correct">0</strong></div>
+      <div class="stat"><small>المحاولات</small><strong id="attempts">0</strong></div>
+      <div class="stat"><small>المتتالية 🔥</small><strong id="streak">0</strong></div>
+    </div>
+  </div>
+  <div class="progress"><div id="progressbar"></div></div>
+  <div class="controls">
+    <div><label for="topic">موضوع التمرين</label>
+      <select id="topic">
+        <option value="mixed">مختلط — كل المواضيع</option>
+        <option value="if">if / else</option>
+        <option value="for">حلقة for</option>
+        <option value="while">حلقة while</option>
+        <option value="count">العدّاد count++</option>
+        <option value="sum">المجموع sum += i</option>
+        <option value="logic">&& و ||</option>
+        <option value="switch">switch</option>
+      </select>
+    </div>
+    <div><label for="difficulty">المستوى</label>
+      <select id="difficulty">
+        <option value="easy">سهل</option><option value="medium" selected>متوسط</option><option value="hard">تحدّي</option>
+      </select>
+    </div>
+  </div>
+  <div class="buttons"><button class="primary" id="newBtn">🎲 تمرين جديد</button><button id="hintBtn">💡 تلميح</button><button id="resetBtn">إعادة النتيجة</button></div>
+</section>
+
+<section class="card" aria-live="polite">
+  <div class="question-number" id="qnumber">التمرين 1</div>
+  <h2 class="question" id="question">جارٍ إعداد أول تمرين…</h2>
+  <p class="muted" id="instruction">اقرأ الكود وتوقّع الناتج النهائي.</p>
+  <pre id="code"></pre>
+  <label for="answer">اكتب الناتج كما سيظهر على الشاشة</label>
+  <input id="answer" placeholder="مثال: 3 12" autocomplete="off" spellcheck="false">
+  <div class="buttons"><button class="primary" id="checkBtn">✅ تصحيح الإجابة</button><button id="solutionBtn">عرض الحل والشرح</button><button id="nextBtn" hidden>➡️ التالي</button></div>
+  <div id="feedback" class="feedback" hidden></div>
+  <div id="hintbox" class="feedback neutral" hidden></div>
+</section>
+
+<section class="card">
+  <h3 style="margin-top:0">📌 تذكير سريع</h3>
+  <ul style="margin-bottom:0">
+    <li><code>count++</code> يزيد العدّاد بمقدار واحد.</li>
+    <li><code>sum += i</code> يضيف قيمة <code>i</code> إلى المجموع.</li>
+    <li><code>&&</code> تعني أن الشرطين يجب أن يتحققا معًا.</li>
+    <li><code>||</code> تعني أن تحقق شرط واحد على الأقل يكفي.</li>
+  </ul>
+</section>
+<footer>Cyber Lab • تعلّم بالممارسة، سؤالًا بعد سؤال</footer>
+</div>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+let current, attempts=0, correct=0, streak=0, questionNo=0, locked=false;
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const join=a=>a.length?a.join(' '):'لا شيء';
+function generate(){
+  let topic=$('topic').value, difficulty=$('difficulty').value;
+  if(topic==='mixed') topic=['if','for','while','count','sum','logic','switch'][rand(0,6)];
+  let max=difficulty==='easy'?5:difficulty==='medium'?8:12;
+  if(topic==='if'){
+    let x=rand(1,max*2), y=rand(2,max+2), op=['>','>=','<','=='][rand(0,3)];
+    let ok=op==='>'?x>y:op==='>='?x>=y:op==='<'?x<y:x===y;
+    return {q:'ما النص الذي سيطبعه البرنامج؟',code:`int x = ${x};\nif (x ${op} ${y}) {\n    cout << "YES";\n} else {\n    cout << "NO";\n}`,answer:ok?'YES':'NO',hint:`عوّض قيمة x (${x}) وقارنها بالعدد ${y}.`,explain:`قيمة x هي ${x}. الشرط x ${op} ${y} ${ok?'صحيح':'غير صحيح'}؛ لذلك يطبع البرنامج ${ok?'YES':'NO'}.`};
+  }
+  if(topic==='for'||topic==='while'){
+    let start=rand(1,3), end=rand(start+2,max), mult=rand(1,difficulty==='hard'?4:3);
+    let vals=[];for(let i=start;i<=end;i++) vals.push(i*mult);
+    let code=topic==='for'?`for (int i = ${start}; i <= ${end}; i++) {\n    cout << i * ${mult} << " ";\n}`:`int i = ${start};\nwhile (i <= ${end}) {\n    cout << i * ${mult} << " ";\n    i++;\n}`;
+    return {q:'اكتب الأعداد المطبوعة بالترتيب.',code,answer:join(vals),hint:`تبدأ i من ${start} وتنتهي عند ${end}. لا تنسَ ضرب كل قيمة في ${mult}.`,explain:`قيم i هي ${join(Array.from({length:end-start+1},(_,k)=>start+k))}. بعد ضرب كل قيمة في ${mult} يكون الناتج: ${join(vals)}.`};
+  }
+  if(topic==='count'){
+    let end=rand(4,max), kind=rand(0,2), threshold=rand(2,Math.max(2,end-1)), vals=[];
+    for(let i=1;i<=end;i++) if(kind===0?i%2===0:kind===1?i%2!==0:i>threshold) vals.push(i);
+    let cond=kind===0?'i % 2 == 0':kind===1?'i % 2 != 0':`i > ${threshold}`;
+    return {q:'كم مرة يُنفّذ count++؟',code:`int count = 0;\nfor (int i = 1; i <= ${end}; i++) {\n    if (${cond}) {\n        count++;\n    }\n}\ncout << count;`,answer:String(vals.length),hint:'لا تجمع قيم i؛ احسب عدد القيم التي تحقق الشرط فقط.',explain:`القيم التي تحقق الشرط هي: ${join(vals)}. عددها ${vals.length}، إذن قيمة count النهائية هي ${vals.length}.`};
+  }
+  if(topic==='sum'){
+    let end=rand(3,max),kind=rand(0,2),threshold=rand(1,Math.max(1,end-2)),vals=[];
+    for(let i=1;i<=end;i++) if(kind===0?i%2===0:kind===1?i%2!==0:i>threshold) vals.push(i);
+    let cond=kind===0?'i % 2 == 0':kind===1?'i % 2 != 0':`i > ${threshold}`;
+    return {q:'ما قيمة sum في نهاية الحلقة؟',code:`int sum = 0;\nfor (int i = 1; i <= ${end}; i++) {\n    if (${cond}) {\n        sum += i;\n    }\n}\ncout << sum;`,answer:String(sum(vals)),hint:'حدّد القيم التي تحقق الشرط، ثم اجمعها. البداية sum = 0.',explain:`القيم التي تحقق الشرط: ${join(vals)}. نجمعها: ${vals.length?vals.join(' + '):'0'} = ${sum(vals)}.`};
+  }
+  if(topic==='logic'){
+    let end=rand(6,max),cut=rand(2,end-1),and=Math.random()<.5,vals=[];
+    for(let i=1;i<=end;i++)if(and?(i%2!==0&&i>cut):(i%2===0||i===cut))vals.push(i);
+    let cond=and?`i % 2 != 0 && i > ${cut}`:`i % 2 == 0 || i == ${cut}`;
+    return {q:'ما العدد والمجموع للقيم التي تحقق الشرط؟',code:`int count = 0, sum = 0;\nfor (int i = 1; i <= ${end}; i++) {\n    if (${cond}) {\n        count++;\n        sum += i;\n    }\n}\ncout << count << " " << sum;`,answer:`${vals.length} ${sum(vals)}`,hint:and?'&& تعني أن الشرطين معًا يجب أن يكونا صحيحين.':'|| تعني أن تحقق أحد الشرطين يكفي.',explain:`القيم المطابقة: ${join(vals)}. عددها ${vals.length} ومجموعها ${sum(vals)}؛ الناتج ${vals.length} ${sum(vals)}.`};
+  }
+  let choice=rand(1,4),letter=['A','B','C','D'][choice-1];
+  return {q:'أي حرف سيظهر؟',code:`int choice = ${choice};\nswitch (choice) {\n    case 1: cout << "A"; break;\n    case 2: cout << "B"; break;\n    case 3: cout << "C"; break;\n    default: cout << "D";\n}`,answer:letter,hint:'طابق قيمة choice مع رقم case. إذا لم تطابق 1 أو 2 أو 3 فسينفّذ default.',explain:`قيمة choice هي ${choice}؛ لذلك الناتج ${letter}.`};
+}
+function normalized(s){return s.trim().replace(/\s+/g,' ').replace(/;$/,'').toLowerCase();}
+function newQuestion(){
+  current=generate();questionNo++;locked=false;
+  $('qnumber').textContent=`التمرين ${questionNo}`;
+  $('question').textContent=current.q;$('code').textContent=current.code;
+  $('instruction').textContent='توقّع الناتج النهائي ثم اكتبه في المربع.';
+  $('answer').value='';$('feedback').hidden=true;$('hintbox').hidden=true;
+  $('checkBtn').disabled=false;$('nextBtn').hidden=true;$('answer').focus();
+}
+function feedback(ok,solution=false){
+  if(locked&&!solution)return;
+  const box=$('feedback');box.hidden=false;box.className='feedback '+(solution?'neutral':ok?'success':'error');
+  box.textContent=(solution?'📘 الحل والشرح':ok?'✅ إجابة صحيحة! أحسنت.':'❌ ليست صحيحة، حاول مرة أخرى.')+
+    `\nالناتج الصحيح: ${current.answer}\n\n${current.explain}`;
+}
+function check(){
+  if(locked)return;
+  if(!$('answer').value.trim()){$('feedback').hidden=false;$('feedback').className='feedback neutral';$('feedback').textContent='اكتب إجابتك أولًا، وبعدها اضغط تصحيح الإجابة.';return;}
+  attempts++;
+  const ok=normalized($('answer').value)===normalized(current.answer);
+  if(ok){correct++;streak++;}else streak=0;
+  $('attempts').textContent=attempts;$('correct').textContent=correct;$('streak').textContent=streak;
+  $('progressbar').style.width=(attempts?Math.round(correct/attempts*100):0)+'%';
+  feedback(ok);locked=true;$('checkBtn').disabled=true;$('nextBtn').hidden=false;
+}
+$('newBtn').addEventListener('click',newQuestion);
+$('nextBtn').addEventListener('click',newQuestion);
+$('checkBtn').addEventListener('click',check);
+$('solutionBtn').addEventListener('click',()=>{feedback(false,true);locked=true;$('checkBtn').disabled=true;$('nextBtn').hidden=false;});
+$('hintBtn').addEventListener('click',()=>{$('hintbox').hidden=false;$('hintbox').textContent='💡 تلميح: '+current.hint;});
+$('resetBtn').addEventListener('click',()=>{attempts=0;correct=0;streak=0;questionNo=0;$('attempts').textContent='0';$('correct').textContent='0';$('streak').textContent='0';$('progressbar').style.width='0%';newQuestion();});
+$('answer').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+newQuestion();
+})();
+</script>
+</body>
+</html>
